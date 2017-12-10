@@ -12,3 +12,4 @@ yarn-error.log
 .env
 /public/css
 /public/js
+tenancy.json
