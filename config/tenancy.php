@@ -204,7 +204,7 @@ return [
          * @warn specify a valid fully qualified class name.
          * @example App\Seeders\AdminSeeder::class
          */
-        'tenant-seed-class' => false,
+        'tenant-seed-class' => TenantDatabaseSeeder::class,
 
         /**
          * Automatically generate a tenant database based on the random id of the

@@ -2,12 +2,14 @@
 
 namespace App;
 
+use Hyn\Tenancy\Traits\UsesTenantConnection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, UsesTenantConnection, HasRoles;
 
     /**
      * The attributes that are mass assignable.
