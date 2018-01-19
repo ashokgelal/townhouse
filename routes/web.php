@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::group(['middleware' => 'tenancy.enforce'], function () {
+    Auth::routes();
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
