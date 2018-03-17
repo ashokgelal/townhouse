@@ -73,7 +73,7 @@ class Tenant
 
     public static function retrieveBy($name): ?Tenant
     {
-        if ($customer = Customer::where('name', $name)->with(['websites', 'hostnames'])->firstOrFail()) {
+        if ($customer = Customer::where('name', $name)->with(['websites', 'hostnames'])->first()) {
             return new Tenant($customer);
         }
 

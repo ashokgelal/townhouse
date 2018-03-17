@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Notifications\TenantCreated;
 use App\Tenant;
 use Hyn\Tenancy\Models\Customer;
 use Illuminate\Console\Command;
@@ -25,6 +26,9 @@ class CreateTenant extends Command
 
         $tenant = Tenant::createFrom($name, $email);
         $this->info("Tenant '{$name}' is created and is now accessible at {$tenant->hostname->fqdn}");
+
+        // invite admin
+        $tenant->admin->notify(new TenantCreated($tenant->hostname));
         $this->info("Admin {$email} has been invited!");
     }
 
