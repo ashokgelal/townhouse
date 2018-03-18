@@ -19,21 +19,15 @@ class TenantCreateCommandTest extends TestCase
     /** @test */
     public function tenant_name_is_required()
     {
-        try {
-            $this->artisan('tenant:create', ['email' => 'test@example.com']);
-        } catch (\Exception $e) {
-            $this->assertEquals('Not enough arguments (missing: "name").', $e->getMessage());
-        }
+        $this->expectExceptionMessage('Not enough arguments (missing: "name").');
+        $this->artisan('tenant:create', ['email' => 'test@example.com']);
     }
 
     /** @test */
     public function tenant_email_is_required()
     {
-        try {
-            $this->artisan('tenant:create', ['name' => 'example']);
-        } catch (\Exception $e) {
-            $this->assertEquals('Not enough arguments (missing: "email").', $e->getMessage());
-        }
+        $this->expectExceptionMessage('Not enough arguments (missing: "email").');
+        $this->artisan('tenant:create', ['name' => 'example']);
     }
 
     /** @test */

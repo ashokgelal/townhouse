@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Tenant;
-use Hyn\Tenancy\Models\Customer;
 use Illuminate\Console\Command;
 
 class DeleteTenant extends Command
@@ -14,8 +13,8 @@ class DeleteTenant extends Command
     public function handle()
     {
         // because this is a destructive command, we'll only allow to run this command
-        // if you are on the local environment
-        if (!app()->isLocal()) {
+        // if the environment is local or testing
+        if (!(app()->isLocal() || app()->runningUnitTests())) {
             $this->error('This command is only avilable on the local environment.');
 
             return;

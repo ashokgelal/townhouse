@@ -20,4 +20,9 @@ abstract class TestCase extends BaseTestCase
     {
         $this->assertDatabaseHas($table, $data, env('DB_CONNECTION'));
     }
+
+    protected function assertSystemDatabaseMissing($table, array $data)
+    {
+        $this->assertDatabaseMissing($table, $data, env('DB_CONNECTION'));
+    }
 }
