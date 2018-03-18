@@ -2,14 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Notifications\TenantCreated;
 use App\Tenant;
-use App\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
+use Tests\TenantAwareTestCase;
 
-class TenantDeleteCommandTest extends TestCase
+class TenantDeleteCommandTest extends TenantAwareTestCase
 {
     protected function setUp()
     {

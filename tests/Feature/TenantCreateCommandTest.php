@@ -6,9 +6,9 @@ use App\Notifications\TenantCreated;
 use App\Tenant;
 use App\User;
 use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
+use Tests\TenantAwareTestCase;
 
-class TenantCreateCommandTest extends TestCase
+class TenantCreateCommandTest extends TenantAwareTestCase
 {
     protected function setUp()
     {
