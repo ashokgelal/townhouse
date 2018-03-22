@@ -10,3 +10,5 @@ Part 2 - [Roles and Permissions](https://medium.com/@ashokgelal/a-full-featured-
 Part 3 - [Invitation](https://medium.com/@ashokgelal/a-full-featured-multi-tenant-app-with-laravel-part-3-invitation-c982dca55eb9)
 
 Part 4 - [Tenancy aware Authentication](https://medium.com/@ashokgelal/a-full-featured-multi-tenant-app-with-laravel-part-4-tenancy-aware-authentication-e0ee37270bc8)
+
+Part 5 - [Testing](https://medium.com/@ashokgelal/a-full-featured-multi-tenant-app-with-laravel-part-2-unit-tests-96d6dfbf0617)
