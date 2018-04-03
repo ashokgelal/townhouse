@@ -14,3 +14,5 @@ yarn-error.log
 /public/js
 tenancy.json
 .env.cleaver
+public/fonts
+mix-manifest.json
