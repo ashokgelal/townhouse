@@ -34,7 +34,7 @@ class Tenant
         app(CustomerRepository::class)->delete($this->customer, true);
     }
 
-    public static function createFrom($name, $email): Tenant
+    public static function createFrom($name, $email, $password = null): Tenant
     {
         // create a customer
         $customer = new Customer;
@@ -57,7 +57,7 @@ class Tenant
         // make hostname current
         app(Environment::class)->hostname($hostname);
 
-        $admin = static::makeAdmin($name, $email, str_random());
+        $admin = static::makeAdmin($name, $email, $password ?: str_random());
 
         return new Tenant($customer, $website, $hostname, $admin);
     }
