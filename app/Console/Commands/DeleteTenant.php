@@ -13,19 +13,15 @@ class DeleteTenant extends Command
     public function handle()
     {
         // because this is a destructive command, we'll only allow to run this command
-        // if the environment is local or testing
-        if (!(app()->isLocal() || app()->runningUnitTests())) {
-            $this->error('This command is only avilable on the local environment.');
+        // if you are on the local environment or testing
+        if (!app()->isLocal()  && !app()->runningUnitTests()) {
+            $this->error('This command is only available on the local environment.');
 
             return;
         }
 
         $name = $this->argument('name');
-        if ($tenant = Tenant::retrieveBy($name)) {
-            $tenant->delete();
-            $this->info("Tenant {$name} successfully deleted.");
-        } else {
-            $this->error("Couldn't find tenant {$name}");
-        }
+        $result = Tenant::delete($name);
+        $this->info($result);
     }
 }

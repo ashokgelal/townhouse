@@ -109,8 +109,8 @@ class ProfileTest extends TenantAwareTestCase
         $this->withoutExceptionHandling();
         // update user from the first tenant
         $this->switchTenant($this->tenants[0])->signIn($user1);
-        $this->update(['email' => 'newemail@tenant.com', 'name' => $user1->name]);
-        $this->assertDatabaseHas('users', ['email' => 'newemail@tenant.com', 'name' => $user1->name]);
+        $this->update(['email' => 'newemail@tenant.com', 'name' => 'new name']);
+        $this->assertDatabaseHas('users', ['email' => 'newemail@tenant.com', 'name' => 'new name']);
 
         // shouldn't update user from the second tenant
         $this->switchTenant($this->tenants[1]);
@@ -153,7 +153,7 @@ class ProfileTest extends TenantAwareTestCase
 
     private function switchTenant(Tenant $tenant)
     {
-        app(Environment::class)->hostname($tenant->hostname);
+        app(Environment::class)->tenant($tenant->website);
 
         return $this;
     }
