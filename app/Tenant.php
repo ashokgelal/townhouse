@@ -3,63 +3,68 @@
 namespace App;
 
 use Hyn\Tenancy\Environment;
-use Hyn\Tenancy\Models\Customer;
 use Hyn\Tenancy\Models\Hostname;
 use Hyn\Tenancy\Models\Website;
 use Illuminate\Support\Facades\Hash;
-use Hyn\Tenancy\Contracts\Repositories\CustomerRepository;
 use Hyn\Tenancy\Contracts\Repositories\HostnameRepository;
 use Hyn\Tenancy\Contracts\Repositories\WebsiteRepository;
 
 /**
- * @property Customer customer
  * @property Website website
  * @property Hostname hostname
  * @property User admin
  */
 class Tenant
 {
-    public function __construct(Customer $customer, Website $website = null, Hostname $hostname = null, User $admin = null)
+    public function __construct(Website $website = null, Hostname $hostname = null, User $admin = null)
     {
-        $this->customer = $customer;
-        $this->website = $website ?? $customer->websites->first();
-        $this->hostname = $hostname ?? $customer->hostnames->first();
+        $this->website = $website;
+        $this->hostname = $hostname;
         $this->admin = $admin;
     }
 
-    public function delete()
+    public static function delete($name)
     {
-        app(HostnameRepository::class)->delete($this->hostname, true);
-        app(WebsiteRepository::class)->delete($this->website, true);
-        app(CustomerRepository::class)->delete($this->customer, true);
+        $baseUrl = env('APP_URL_BASE');
+        $name = "{$name}.{$baseUrl}";
+        if ($tenant = Hostname::where('fqdn', $name)->firstOrFail()) {
+            app(HostnameRepository::class)->delete($tenant, true);
+            app(WebsiteRepository::class)->delete($tenant->website, true);
+            return "Tenant {$name} successfully deleted.";
+        }
     }
 
-    public static function createFrom($name, $email, $password = null): Tenant
+    public static function deleteByFqdn($fqdn)
     {
-        // create a customer
-        $customer = new Customer;
-        $customer->name = $name;
-        $customer->email = $email;
+        if ($tenant = Hostname::where('fqdn', $fqdn)->firstOrFail()) {
+            app(HostnameRepository::class)->delete($tenant, true);
+            app(WebsiteRepository::class)->delete($tenant->website, true);
+            return "Tenant {$fqdn} successfully deleted.";
+        }
+    }
 
-        app(CustomerRepository::class)->create($customer);
+    public static function registerTenant($name, $email, $password): Tenant
+    {
+        // Convert all to lowercase
+        $name = strtolower($name);
+        $email = strtolower($email);
 
-        // associate the customer with a website
         $website = new Website;
-        $website->customer()->associate($customer);
         app(WebsiteRepository::class)->create($website);
 
         // associate the website with a hostname
         $hostname = new Hostname;
-        $baseUrl = config('app.url_base');
+        $baseUrl = env('APP_URL_BASE');
         $hostname->fqdn = "{$name}.{$baseUrl}";
-        $hostname->customer()->associate($customer);
         app(HostnameRepository::class)->attach($hostname, $website);
+
         // make hostname current
-        app(Environment::class)->hostname($hostname);
+        app(Environment::class)->tenant($hostname->website);
 
-        $admin = static::makeAdmin($name, $email, $password ?: str_random());
+        // Make the registered user the default Admin of the site.
+        $admin = static::makeAdmin($name, $email, $password);
 
-        return new Tenant($customer, $website, $hostname, $admin);
+        return new Tenant($website, $hostname, $admin);
     }
 
     private static function makeAdmin($name, $email, $password): User
@@ -71,12 +76,9 @@ class Tenant
         return $admin;
     }
 
-    public static function retrieveBy($name): ?Tenant
+    public static function tenantExists($name)
     {
-        if ($customer = Customer::where('name', $name)->with(['websites', 'hostnames'])->first()) {
-            return new Tenant($customer);
-        }
-
-        return null;
+        $name = $name . '.' . env('APP_URL_BASE');
+        return Hostname::where('fqdn', $name)->exists();
     }
 }

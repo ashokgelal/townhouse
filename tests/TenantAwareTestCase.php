@@ -24,7 +24,7 @@ abstract class TenantAwareTestCase extends TestCase
     protected function refreshApplication()
     {
         parent::refreshApplication();
-        $this->artisan('tenancy:install');
+        $this->artisan('migrate:fresh');
     }
 
     protected function assertSystemDatabaseHas($table, array $data)
@@ -40,7 +40,7 @@ abstract class TenantAwareTestCase extends TestCase
     protected function tearDown()
     {
         foreach ($this->tenants as $tenant) {
-            $tenant->delete();
+            $tenant->deleteByFqdn($tenant->hostname->fqdn);
         }
         parent::tearDown();
     }
@@ -59,7 +59,7 @@ abstract class TenantAwareTestCase extends TestCase
 
     protected function registerTenant($tenantName = 'test'): Tenant
     {
-        $tenant = Tenant::createFrom($tenantName, "admin@{$tenantName}.com", 'secret');
+        $tenant = Tenant::registerTenant($tenantName, "admin@{$tenantName}.com", 'secret');
         array_push($this->tenants, $tenant);
 
         return $tenant;
