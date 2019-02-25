@@ -12,3 +12,10 @@ Part 3 - [Invitation](https://medium.com/@ashokgelal/a-full-featured-multi-tenan
 Part 4 - [Tenancy aware Authentication](https://medium.com/@ashokgelal/a-full-featured-multi-tenant-app-with-laravel-part-4-tenancy-aware-authentication-e0ee37270bc8)
 
 Part 5 - [Testing](https://medium.com/@ashokgelal/a-full-featured-multi-tenant-app-with-laravel-part-2-unit-tests-96d6dfbf0617)
+
+Part 6 - [User Profile](https://medium.com/@ashokgelal/a-full-featured-multi-tenant-app-with-laravel-part-5-user-profile-5c3d0c655f3a)
+
+Part 7 - [Deployment](https://blog.usejournal.com/a-full-featured-multi-tenant-app-with-laravel-part-7-deployment-40bb3c895627)
+
+### Server provisioning and deployments made easy for you 
+[Cleaver](https://getcleaver.com/images/logo.png) helps you create servers ready for deploying your web apps with zero downtime, for free!
