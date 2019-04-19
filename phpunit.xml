@@ -29,8 +29,8 @@
         <server name="MAIL_DRIVER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
-        <env name="DB_DATABASE" value="testing"/>
-        <env name="TENANCY_AUTO_HOSTNAME_IDENTIFICATION" value="false"/>
-        <env name="TENANCY_DATABASE_AUTO_DELETE" value="true"/>
+        <server name="TENANCY_DATABASE" value="testing"/>
+        <server name="TENANCY_AUTO_HOSTNAME_IDENTIFICATION" value="false"/>
+        <server name="TENANCY_DATABASE_AUTO_DELETE" value="true"/>
     </php>
 </phpunit>

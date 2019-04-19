@@ -25,7 +25,7 @@ class Tenant
 
     public static function delete($name)
     {
-        $baseUrl = env('APP_URL_BASE');
+        $baseUrl = config('tenancy.hostname.default');
         $name = "{$name}.{$baseUrl}";
         if ($tenant = Hostname::where('fqdn', $name)->firstOrFail()) {
             app(HostnameRepository::class)->delete($tenant, true);
@@ -54,7 +54,7 @@ class Tenant
 
         // associate the website with a hostname
         $hostname = new Hostname;
-        $baseUrl = env('APP_URL_BASE');
+        $baseUrl = config('tenancy.hostname.default');
         $hostname->fqdn = "{$name}.{$baseUrl}";
         app(HostnameRepository::class)->attach($hostname, $website);
 
@@ -70,7 +70,6 @@ class Tenant
     private static function makeAdmin($name, $email, $password): User
     {
         $admin = User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password)]);
-        $admin->guard_name = 'web';
         $admin->assignRole('admin');
 
         return $admin;
@@ -78,7 +77,7 @@ class Tenant
 
     public static function tenantExists($name)
     {
-        $name = $name . '.' . env('APP_URL_BASE');
+        $name = $name . '.' . config('tenancy.hostname.default');
         return Hostname::where('fqdn', $name)->exists();
     }
 }

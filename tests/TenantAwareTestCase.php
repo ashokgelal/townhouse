@@ -24,17 +24,18 @@ abstract class TenantAwareTestCase extends TestCase
     protected function refreshApplication()
     {
         parent::refreshApplication();
-        $this->artisan('migrate:fresh');
+        $this->artisan('migrate:fresh --database=' . config('tenancy.db.system-connection-name'));
+        $this->artisan('tenancy:migrate:refresh');
     }
 
     protected function assertSystemDatabaseHas($table, array $data)
     {
-        $this->assertDatabaseHas($table, $data, env('DB_CONNECTION'));
+        $this->assertDatabaseHas($table, $data, config('tenancy.db.system-connection-name'));
     }
 
     protected function assertSystemDatabaseMissing($table, array $data)
     {
-        $this->assertDatabaseMissing($table, $data, env('DB_CONNECTION'));
+        $this->assertDatabaseMissing($table, $data, config('tenancy.db.system-connection-name'));
     }
 
     protected function tearDown(): void

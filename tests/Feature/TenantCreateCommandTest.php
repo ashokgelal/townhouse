@@ -42,9 +42,12 @@ class TenantCreateCommandTest extends TenantAwareTestCase
     public function can_create_new_tenant()
     {
         $this->artisan('tenant:create', ['name' => 'example', 'password'=>'secret', 'email' => 'test@example.com']);
-        $fqdn = 'example.'.env('app_url_base');
+
+        $fqdn = 'example.'.config('tenancy.hostname.default');
         $this->assertSystemDatabaseHas('hostnames', ['fqdn' => $fqdn]);
+
         $hostname = Hostname::with('website')->where('fqdn',$fqdn)->first();
+
         $this->assertSystemDatabaseHas('websites', ['id' => $hostname->website_id]);
         $this->assertDatabaseHas('users', ['email' => 'test@example.com']);
     }
