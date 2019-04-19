@@ -11,7 +11,7 @@ use Hyn\Tenancy\Models\Website;
 
 class TenantDeleteCommandTest extends TenantAwareTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Notification::fake();
@@ -44,7 +44,7 @@ class TenantDeleteCommandTest extends TenantAwareTestCase
         $this->assertDatabaseHas('users', ['email' => 'test@example.com']);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($tenant = Tenant::tenantExists('example')) {
             $tenant->delete();

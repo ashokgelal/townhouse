@@ -11,7 +11,7 @@ use Tests\TenantAwareTestCase;
 
 class TenantCreateCommandTest extends TenantAwareTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Notification::fake();
@@ -74,7 +74,7 @@ class TenantCreateCommandTest extends TenantAwareTestCase
         Notification::assertSentTo(User::where('email', 'test@example.com')->get(), TenantCreated::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($tenant = Tenant::tenantExists('example')) {
             Tenant::delete('example');

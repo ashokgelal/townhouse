@@ -14,7 +14,7 @@ abstract class TenantAwareTestCase extends TestCase
 
     protected $tenants;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->tenants = [];
@@ -37,7 +37,7 @@ abstract class TenantAwareTestCase extends TestCase
         $this->assertDatabaseMissing($table, $data, env('DB_CONNECTION'));
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach ($this->tenants as $tenant) {
             $tenant->deleteByFqdn($tenant->hostname->fqdn);
