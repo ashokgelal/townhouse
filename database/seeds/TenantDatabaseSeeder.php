@@ -1,8 +1,8 @@
 <?php
 
 use App\Permission;
+use App\Role;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 
 class TenantDatabaseSeeder extends Seeder
 {
@@ -17,6 +17,7 @@ class TenantDatabaseSeeder extends Seeder
         $adminPermissions = collect(['create user', 'edit user', 'delete user'])->map(function ($name) {
             return Permission::create(['name' => $name]);
         });
+
         // add admin role
         $adminRole = Role::create(['name' => 'admin']);
         $adminRole->givePermissionTo($adminPermissions);
