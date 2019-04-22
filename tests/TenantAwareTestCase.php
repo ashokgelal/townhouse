@@ -5,6 +5,7 @@ namespace Tests;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Tenant;
 use App\User;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -18,6 +19,7 @@ abstract class TenantAwareTestCase extends TestCase
     {
         parent::setUp();
         $this->tenants = [];
+        Config::set('tenancy.website.auto-delete-tenant-directory', true);
         Notification::fake();
     }
 
@@ -66,7 +68,7 @@ abstract class TenantAwareTestCase extends TestCase
         return $tenant;
     }
 
-    protected function withoutVerifiyCSRFMiddleware()
+    protected function withoutVerifyCSRFMiddleware()
     {
         return $this->withoutMiddleware(VerifyCsrfToken::class);
     }
