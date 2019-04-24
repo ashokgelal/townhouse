@@ -11,7 +11,7 @@ use Tests\TenantAwareTestCase;
 
 class TenantCreateCommandTest extends TenantAwareTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Notification::fake();
@@ -42,9 +42,12 @@ class TenantCreateCommandTest extends TenantAwareTestCase
     public function can_create_new_tenant()
     {
         $this->artisan('tenant:create', ['name' => 'example', 'password'=>'secret', 'email' => 'test@example.com']);
-        $fqdn = 'example.'.env('app_url_base');
+
+        $fqdn = 'example.'.config('tenancy.hostname.default');
         $this->assertSystemDatabaseHas('hostnames', ['fqdn' => $fqdn]);
+
         $hostname = Hostname::with('website')->where('fqdn',$fqdn)->first();
+
         $this->assertSystemDatabaseHas('websites', ['id' => $hostname->website_id]);
         $this->assertDatabaseHas('users', ['email' => 'test@example.com']);
     }
@@ -74,7 +77,7 @@ class TenantCreateCommandTest extends TenantAwareTestCase
         Notification::assertSentTo(User::where('email', 'test@example.com')->get(), TenantCreated::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($tenant = Tenant::tenantExists('example')) {
             Tenant::delete('example');

@@ -11,7 +11,7 @@ use Hyn\Tenancy\Models\Website;
 
 class TenantDeleteCommandTest extends TenantAwareTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Notification::fake();
@@ -28,7 +28,7 @@ class TenantDeleteCommandTest extends TenantAwareTestCase
     public function can_delete_existing_tenant()
     {
         $this->artisan('tenant:create', ['name' => 'example', 'password'=>'secret', 'email' => 'test@example.com']);
-        $fqdn = 'example.'.env('app_url_base');
+        $fqdn = 'example.'.config('tenancy.hostname.default');
         $hostname = Hostname::with('website')->where('fqdn',$fqdn)->first();
         $this->artisan('tenant:delete', ['name' => 'example']);
         $this->assertSystemDatabaseMissing('hostnames', ['fqdn' => $fqdn]);
@@ -44,7 +44,7 @@ class TenantDeleteCommandTest extends TenantAwareTestCase
         $this->assertDatabaseHas('users', ['email' => 'test@example.com']);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($tenant = Tenant::tenantExists('example')) {
             $tenant->delete();
