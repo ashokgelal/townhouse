@@ -8,17 +8,15 @@ Route::middleware('web')
 
 
 //non-auth, non-api web routes for tenants
-        
-        
-        
+
+
+
     });
 
 
 
 Route::middleware(['web', 'auth'])
     ->namespace('App\Http\Controllers')
-    ->as('tenant.account.')
-    ->prefix('account')
     ->group(function () {
 
         // access route names as tenant.account.profile.* e.g. tenant.account.profile.edit
