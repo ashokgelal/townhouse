@@ -148,7 +148,7 @@ class ProfileTest extends TenantAwareTestCase
 
     private function update($attributes)
     {
-        return $this->withoutVerifiyCSRFMiddleware()->patch(route('tenant.account.profile.update'), $attributes);
+        return $this->withoutVerifyCSRFMiddleware()->patch(route('tenant.account.profile.update'), $attributes);
     }
 
     private function switchTenant(Tenant $tenant)
